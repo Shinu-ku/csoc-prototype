@@ -1,0 +1,7 @@
+const API='http://127.0.0.1:8000';
+const jobs=[{id:'P1',arrival:0,burst:8,priority:2},{id:'P2',arrival:1,burst:4,priority:1},{id:'P3',arrival:2,burst:2,priority:3},{id:'P4',arrival:3,burst:6,priority:2}];
+async function refresh(){try{const s=await fetch(API+'/api/system').then(r=>r.json());cpu.textContent=s.cpu+'%';memory.textContent=s.memory+'%';disk.textContent=s.disk+'%';procCount.textContent=s.processes;status.textContent='● Online';alerts.innerHTML=s.alerts.length?s.alerts.map(a=>`<div class="alert ${a.severity}">${a.severity.toUpperCase()} — ${a.message}</div>`).join(''):'<div>No active alerts.</div>';}catch(e){status.textContent='● API Offline'}}
+async function loadProcesses(){const data=await fetch(API+'/api/processes').then(r=>r.json());processTable.innerHTML=data.map(p=>`<tr><td>${p.pid}</td><td>${p.name}</td><td>${p.cpu}%</td><td>${p.memory}%</td><td>${p.state}</td></tr>`).join('')}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));document.getElementById(b.dataset.view).classList.remove('hidden');if(b.dataset.view==='processes')loadProcesses()});
+run.onclick=async()=>{const algorithm=document.getElementById('algorithm').value;const data=await fetch(`${API}/api/schedule/${algorithm}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(jobs)}).then(r=>r.json());result.textContent=JSON.stringify(data,null,2)};
+refresh();setInterval(refresh,5000);
