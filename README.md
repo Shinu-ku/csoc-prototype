@@ -1,84 +1,40 @@
-# CSOC Platform — Interactive Prototype v2
+# CSOC Platform
 
-A visual PBL prototype for **Cybersecurity Operations Center Platform**, focused on the Operating Systems syllabus covered in Review 1.
+CSOC Platform is a centralized cybersecurity operations and system-monitoring platform designed for multiple Linux systems. Lightweight CSOC agents collect operating-system-level telemetry including CPU, memory, disk, process and system-status information and transmit it to a central FastAPI backend. The backend validates and stores the data, applies transparent rule-based analysis, generates security alerts for abnormal resource and process behavior, and exposes the results through a centralized administrator dashboard. The platform also includes an Operating Systems learning module implementing CPU scheduling algorithms such as FCFS, SJF, SRTF, Non-Preemptive Priority and Pre-emptive Priority, along with Linux shell automation for system administration tasks.
 
-## What this prototype demonstrates
+## Architecture
 
-### Unit 1
-- Linux monitoring concept
-- CLI/shell scripting
-- Automated system administration
-- `ps`, `uptime`, `free`, `df`
-- Shell variables/commands through the monitoring script
+- **Frontend**: React + Vite (Dashboard)
+- **Backend**: FastAPI + SQLite (Central Receiver and Analysis Engine)
+- **Agent**: Python + psutil (Linux telemetry collector)
 
-### Unit 2
-- Process monitoring
-- PID, state, CPU and memory information
-- PCB concept (conceptual representation)
-- CPU scheduling simulation:
-  - FCFS
-  - SJF
-  - SRTF
-  - Non-Preemptive Priority
-  - Pre-emptive Priority
-- Gantt chart
-- Average waiting time
-- Average turnaround time
+## Getting Started
 
-### Cybersecurity layer
-- Rule-based resource anomaly indicators
-- Security alert dashboard
-- High CPU/memory investigation workflow
+### 1. Backend Setup
+```bash
+cd backend
+python -m venv .venv
+# Activate venv: source .venv/bin/activate (Linux/Mac) or .venv\Scripts\activate (Windows)
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
 
-## Run the visual prototype
-
-No installation is required.
-
-Open:
-
-`frontend/index.html`
-
-in a browser.
-
-For a local server:
-
+### 2. Frontend Setup
 ```bash
 cd frontend
-python3 -m http.server 5500
+npm install
+npm run dev
 ```
 
-Then open:
-
-`http://localhost:5500`
-
-## Run the Linux shell demo
-
-On Linux:
-
+### 3. Agent Setup
 ```bash
-chmod +x scripts/system_monitor.sh
-./scripts/system_monitor.sh
+cd agent
+pip install -r requirements.txt
+python csoc_agent.py
 ```
 
-## Important project boundary
-
-This is a **Review 1 prototype**, not an enterprise SOC.
-
-The CPU scheduler is a simulation for the Operating Systems syllabus. It does not modify the Linux kernel scheduler.
-
-The security alerts are rule-based demonstration indicators, not a production intrusion-detection system.
-
-## Planned later expansion
-
-As remaining OS syllabus units are covered, modules can be added for:
-
-- Threads
-- Synchronization
-- Mutex/semaphores
-- Race conditions
-- Deadlock and Banker's Algorithm
-- Memory management
-- Paging and page replacement
-- File management
-- Disk scheduling
-- Virtualization/GPU topics where applicable
+## Documentation
+- [Architecture](docs/architecture.md)
+- [API Reference](docs/api.md)
+- [Syllabus Mapping](docs/syllabus-mapping.md)
+- [Demo Guide](docs/demo-guide.md)

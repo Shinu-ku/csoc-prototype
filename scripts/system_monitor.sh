@@ -1,19 +1,20 @@
 #!/bin/bash
-# CSOC Review 1 - basic Linux system monitoring
-echo "===== CSOC SYSTEM MONITOR ====="
-echo "Timestamp: $(date)"
+echo "=== System Monitor ==="
 echo "Hostname: $(hostname)"
-echo
-echo "--- Uptime ---"
-uptime
-echo
-echo "--- Memory ---"
-free -h
-echo
-echo "--- Disk ---"
+echo "Uptime: $(uptime -p)"
+echo ""
+
+echo "=== CPU Info ==="
+top -bn1 | grep "Cpu(s)"
+echo ""
+
+echo "=== Memory Info ==="
+free -m
+echo ""
+
+echo "=== Disk Info ==="
 df -h /
-echo
-echo "--- Top Processes ---"
-ps -eo pid,comm,%cpu,%mem,state --sort=-%cpu | head -n 8
-echo
-echo "===== MONITORING COMPLETE ====="
+echo ""
+
+echo "=== Top Processes ==="
+ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head -n 10
